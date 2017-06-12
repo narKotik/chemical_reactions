@@ -546,7 +546,7 @@ function getTestedFormula(str){
   }else if(arr.length > 1){
     throw Error('Елементы: ' + arr.toString() + ' не сошлись.');
   }else{
-    console.log('Все сошлось.')
+    return true;
   }
 function findIndexes(b){
 	for(var j = 0; j < elements.arrOfElements.length; j++){
