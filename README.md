@@ -5,8 +5,10 @@ calculateReactionsCoef('2H2O + 2K = 2KOH + H2', true)
 calculateReactionsCoef('H2O + K = KOH + H2')
 first paramether is reaction, second if you need to clear it from coefficients
 
-for test if the reaction is ballanced use 
+for test if the reaction is ballanced use
+
 getTestedFormula('2H2O + 2K = 2KOH + H2'); // > true
+
 getTestedFormula('2H2O + 2K = KOH + H2'); // > false
 
 if you need to calculate id of substance you can use
