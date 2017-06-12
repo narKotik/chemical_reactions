@@ -1,6 +1,6 @@
 # chemical_reactions
 
-code based on c_urav 2.0 by Восков Алексей and translated from c++ to javascript and php
+Code is based on c_urav 2.0 by Восков Алексей and translated from c++ to javascript and php
 
 js code for balance chemical reaction use:
 
