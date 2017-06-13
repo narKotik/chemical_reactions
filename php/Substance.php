@@ -2,8 +2,7 @@
 
 class Substance
 {
-	protected $flagFor = false; // 
-	protected $firstIndex = 1;
+    protected $firstIndex = 1;
     protected $brackets = [];
     protected $elements = [
         'arrOfElements' => [],
@@ -26,10 +25,10 @@ class Substance
         $this->findBrackets($str);
         $this->findIndexes(true);
 
-		
-		if( !is_array($this->elements['array']) ){
-			throw new Exception($this->formula);
-		}
+
+        if( !is_array($this->elements['array']) ){
+            throw new Exception($this->formula);
+        }
         foreach ($this->elements['array'] as $k => $v) {
             $index = ($this->elements['array'][$k][0] > 1) ? $this->elements['array'][$k][0] : '';
             $arr[] = $k . $index;
@@ -181,5 +180,4 @@ class Substance
         }
         return $indexOfElement;
     }
-
 }
