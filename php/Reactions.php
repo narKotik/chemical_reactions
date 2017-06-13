@@ -68,9 +68,6 @@ Class Reaction
                 $this->arrafter[$k] = $item;
             }
         }
-
-        //sort($this->arrbefore);
-        //sort($this->arrafter);
     }
 
     public function getStrB()
@@ -249,7 +246,7 @@ Class Reaction
 		
 		$doubbleSub = array_intersect($this->arrbefore, $this->arrafter);
 		if ( count($doubbleSub) > 0 ) {
-				throw new Exception(self::ERROR_DOUBLE_SUBSTANCES . implode(',', $doubbleSub));
+			throw new Exception(self::ERROR_DOUBLE_SUBSTANCES . implode(',', $doubbleSub));
 		}	
         
 		
