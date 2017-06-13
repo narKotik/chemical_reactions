@@ -72,13 +72,13 @@ Class Reaction
 
     public function getStrB()
     {
-		sort($this->arrbefore);
+        sort($this->arrbefore);
         return '|' . implode('|', $this->arrbefore) . '|';
     }
 
     public function getStrA()
     {
-		sort($this->arrafter);
+        sort($this->arrafter);
         return '|' . implode('|', $this->arrafter) . '|';
     }
 
@@ -238,19 +238,17 @@ Class Reaction
         $chargedSubstance = 0;
         $arrayMatrix = [];
         $arrayX = [];
-        
+
         if (strpos($str, '=') === false) throw new Exception(self::ERROR_NOT_FOUND_EQUAL_SIGN);
         if (strpos($str, '=') != strrpos($str, '=')) throw new Exception(self::ERROR_DOUBLE_EQUAL_SIGN);
         if (strpos($str, '**') !== false) throw new Exception(self::ERROR_DOUBLE_STAR_SIGN);
-		
-		
-		$doubbleSub = array_intersect($this->arrbefore, $this->arrafter);
-		if ( count($doubbleSub) > 0 ) {
-			throw new Exception(self::ERROR_DOUBLE_SUBSTANCES . implode(',', $doubbleSub));
-		}	
-        
-		
-		//str_replace(, , )
+
+
+        $doubbleSub = array_intersect($this->arrbefore, $this->arrafter);
+        if ( count($doubbleSub) > 0 ) {
+            throw new Exception(self::ERROR_DOUBLE_SUBSTANCES . implode(',', $doubbleSub));
+        }
+
         $reaction = $this->varietyOfElements();
 
         $reaction['substances'] = array_merge($this->arrbefore, $this->arrafter);
@@ -276,8 +274,8 @@ Class Reaction
             $arrayMatrix[count($reaction['elements'])][$i] = $this->brackets['charge'];
 
             if ($this->brackets['charge'] != 0) {
-				$chargedSubstance++;
-			}
+                $chargedSubstance++;
+            }
 
             /* Реакция на признак электрона */
             if ($reaction['substances'][$i] == 'e') {
@@ -303,7 +301,7 @@ Class Reaction
         if ($chargedSubstance) $nelem++;
 
         /***** VII. ПРИМЕНЕНИЕ МЕТОДА ГАУССА *****/
-        $gaussAnswer = $this->gauss($arrayMatrix, $length, $nelem, $arrayX); //по ходу этот массив можно создать в самом гаусе
+        $gaussAnswer = $this->gauss($arrayMatrix, $length, $nelem, $arrayX);
 
         if ($gaussAnswer == self::GAUSS_NOSOL) throw new Exception("Эту реакцию нельзя уравнять");
         if ($gaussAnswer == self::GAUSS_MANYSOL) throw new Exception("Реакцию можно уравнять бесконечным числом способов");
@@ -314,7 +312,7 @@ Class Reaction
         for ($i = 1; $i <= 2000; $i++) { // чем выше число тем больше может быть коэффициент
             /* Проверка коэфф i на пригодность */
             $k = 1;
-            for ($j = 0; $j <= $length; $j++) { // меньше равно и минус 1
+            for ($j = 0; $j <= $length; $j++) {
                 $ta = $arrayX[$j] * $i;
                 $tb = round($ta) - $ta;
                 if ($this->cmpzero($tb)) {
@@ -373,7 +371,7 @@ Class Reaction
             /* Вывод соединения i с коэффициентом */
             if ($arrayX[$i] >= 0){
                 continue;
-			}
+            }
 
             if ($i > 0 && $j) $s .= ' + '; /* Вывод знака - разделителя */
 
@@ -396,36 +394,36 @@ Class Reaction
 
     public function getTestedFormula()
     {
-		$chargedSubstance = 0;
-		$charge = [0,0];
-		
+        $chargedSubstance = 0;
+        $charge = [0,0];
+
         foreach ($this->arrbeforeRaw as $i => $item) {
             $this->findBrackets($item);
-			
-			 if ($this->brackets['charge'] != 0){
-				 $charge[0] += ((int)$item?:1) * $this->brackets['charge'];
-				 
-				 $chargedSubstance++;
-			 }
+
+             if ($this->brackets['charge'] != 0){
+                 $charge[0] += ((int)$item?:1) * $this->brackets['charge'];
+
+                 $chargedSubstance++;
+             }
 
             /* Реакция на признак электрона */
             if ($this->arrbefore[$i] == 'e') {
                 $charge[0] += ((int)$item?:1) * -1;
-                
+
                 $chargedSubstance++;
                 continue;
-            }            
-			
-			$this->findIndexes(true);
+            }
+
+            $this->findIndexes(true);
         }
 
         foreach ($this->arrafterRaw as $i => $item) {
-            $this->findBrackets($item);			
-			
-			if ($this->brackets['charge'] != 0){
-				$charge[1] += ((int)$item?:1) * $this->brackets['charge'];
-				$chargedSubstance++;
-			}
+            $this->findBrackets($item);
+
+            if ($this->brackets['charge'] != 0){
+                $charge[1] += ((int)$item?:1) * $this->brackets['charge'];
+                $chargedSubstance++;
+            }
 
             /* Реакция на признак электрона */
             if ($this->arrafter[$i] == 'e') {
@@ -433,28 +431,28 @@ Class Reaction
                 $chargedSubstance++;
                 continue;
             }
-            
-			$this->findIndexes();
+
+            $this->findIndexes();
         }
 
         $arr = [];
 
         foreach ($this->elements['elements'] as $item) {
 
-            if ($this->elements['array'][$item][0] == $this->elements['array'][$item][1]){ 
-				continue;
-			}
+            if ($this->elements['array'][$item][0] == $this->elements['array'][$item][1]){
+                continue;
+            }
             $arr[] = $item;
 
         }
-		
-		if ( $chargedSubstance == 1 ) {
-			throw new Exception('Только одна заряженная частица.');
-		}
-		if ( $charge[0] != $charge[1] )  {
-			throw new Exception('Ошибка заряда.');
-		}
-		
+
+        if ( $chargedSubstance == 1 ) {
+            throw new Exception('Только одна заряженная частица.');
+        }
+        if ( $charge[0] != $charge[1] )  {
+            throw new Exception('Ошибка заряда.');
+        }
+
         if (count($arr) == 1) {
             throw new Exception('Елемент: ' . $arr[0] . ' не сошелся.');
         } else if (count($arr) > 1) {
